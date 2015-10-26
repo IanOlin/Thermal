@@ -65,22 +65,5 @@ end
     function res = heatCapacity(mass, specificHeat)
         res = mass * specificHeat;
     end
-    function res = barToSteam(~, y)
-        deltaTemperature = energyToTemperature(y, massOfBar, specificHeatOfCoffee) -environmentalTemperature;
-        
-        conductionFlow = thermalConductivityOfCupWalls * areaOfConduction / thicknessOfCupWalls * deltaTemperature;
-        
-        res = -conductionFlow;
-    end
-    function res = phaseChange(~,y)
-        %q=m*heatofvaporization
-        phaseFlow = massOfWater * heatOfVaporization;
     
-    end
-    function steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass)
-        shit = 0;
-    end
-    function liquidHeatLoss(liquidTemp, liquidMass)
-        shit = 0;
-    end
-        
+    
