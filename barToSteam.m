@@ -1,4 +1,4 @@
-function shit = barToSteam(heat, steamTemp)%current heat of bar, steam temp, non ode runnable
+function res = barToSteam(heat, steamTemp)%current heat of bar, steam temp, non ode runnable
     transferCoefficient = 50; %this is shit
     specificHeatBar = 475 ; %specific heat in joules per kg kelvin
     densityBar = 7850;
@@ -13,7 +13,7 @@ function shit = barToSteam(heat, steamTemp)%current heat of bar, steam temp, non
         
         conductionFlow = transferCoefficient * surfaceAreaBar * deltaTemperature;%flow of heat
         
-        shit = conductionFlow;
+        res = conductionFlow;
 end
     function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
