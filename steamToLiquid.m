@@ -1,3 +1,4 @@
 function shit = steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass)
-        shit = 0;
+        
+        steamSA = (lengthBar + 2 * steamThickness) * (pi * (diamaterBar + 2 * steamThickness)) + 2 * pi * (diamaterBar/2 + steamThickness)^2;
     end

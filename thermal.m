@@ -13,6 +13,7 @@ function thermal()
     lengthBar = .05 ;%length of bar in meters
     diameterBar = .04 ;%length of side of bar in meters
     volumeBar = pi*(diameterBar/2)^2*lengthBar; %volume
+    surfaceAreaBar = pi * diameterBar * lengthBar + pi * (diameterBar/2)^2;
     
         %% size of mug
     diameterCider = 8/100; %meters
