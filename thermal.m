@@ -23,10 +23,11 @@ function thermal()
     
     %steam surface area
     steamThickness = .01;
-    steamSA = (lengthBar + 2 * steamThickness) * (pi * (diamaterBar + 2 * steamThickness)) + 2 * pi * (diamaterBar/2 + steamThickness)^2;
+    steamSA = (lengthBar + 2 * steamThickness) * (pi * (diameterBar + 2 * steamThickness)) + 2 * pi * (diameterBar/2 + steamThickness)^2;
     %steam heat transfer coefficient
     steamHeatTransfer = stuff;
     thermalConductivityMug =1.5; %W/(m*K)
+    steamLiquidCoefficient = 2800;%W/(mK), is bullshit
         
         %initial teamp values (K)
         barTemp = 1500;
@@ -36,6 +37,9 @@ function thermal()
         initialRoomTemperature = 290;
         initialBarTemperature = 1500;
         
+        barEnergy = stuff;
+        steamEnergy = stuff;
+        liquidEnergy = stuff;
         %% time settings
         
         initialTime = 1;

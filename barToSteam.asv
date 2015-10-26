@@ -1,7 +1,7 @@
 function res = barToSteam(heat, steamEnergy, massSteam)%current heat of bar, steam temp, non ode runnable
     transferCoefficient = 50; %this is shit
     specificHeatBar = 475 ; %specific heat in joules per kg kelvin
-    specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
+    specificHeatSteam = ;
     densityBar = 7850;
     lengthBar = .05 ;%length of bar in meters
     diameterBar = .04 ;%length of side of bar in meters
