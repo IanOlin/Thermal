@@ -10,7 +10,7 @@ function res = liquidHeatLoss(~, params)%params + liquidEnergy, liquidMass, liqu
         thermalHeatCoefficient = 10;%shitshitshitshitshitshitshitshitshitshitshitshit
         conduction = thermalConductivity * mugSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290) / mugThickness;
         convection = thermalHeatCoefficient * airSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290);
-        newParams = zeros(1, 21);
+        newParams = zeros(1, legnth(params));
         newParams(18) = conduction + convection;
         res = newParams;
 end
