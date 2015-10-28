@@ -91,8 +91,7 @@ function thermal()
 %   
 %         end
 
-
-            [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+            [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
             T = T.';
             Y = Y.';
             blah = zeros(1, length(T));
@@ -100,8 +99,18 @@ function thermal()
                 blah(n) = Y(17, n);
             end
             plot(T, blah, 'b');
-            
-            hold on;
+
+
+%             [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+%             T = T.';
+%             Y = Y.';
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(17, n);
+%             end
+%             plot(T, blah, 'b');
+%             
+%             hold on;
             
 %             [T, Y] = ode45(@liquidHeatLoss, [initialTime, 10], params.');
 %             T = T.';
