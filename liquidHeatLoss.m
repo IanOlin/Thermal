@@ -4,8 +4,9 @@ function res = liquidHeatLoss(liquidEnergy, liquidMass, liquidVolume)%needs temp
         mugThickness = .007;
         thermalConductivity = 1.5;
         specificHeat = 4186;
+        thermalHeatCoefficient = 10;%shitshitshitshitshitshitshitshitshitshitshitshit
         conduction = thermalConductivity * mugSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeat) - 290) / mugThickness;
-        convection = 0;%didn't find liquid to air coefficient
+        convection = thermalHeatCoefficient * airSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeat) - 290);
         
         res = conduction + convection;
 end
