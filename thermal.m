@@ -89,24 +89,8 @@ function thermal()
         
 
         %% main
-%         for n = initialTime:finalTime
-%             barToSteam(barTemp, steamTemp, massOfSteam);
-%             steamToLiquid(steamTemp, liquidTemp, massOfSteam, liquidMass);
-%             liquidHeatLoss(liquidTemp, liquidMass);
-%   
-%         end
-
-%             [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
-%             T = T.';
-%             Y = Y.';
-%             blah = zeros(1, length(T));
-%             for n = 1:length(T)
-%                 blah(n) = Y(18, n);
-%             end
-%             plot(T, blah, 'b');
-
-
-            [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+        
+            [T, Y] = ode45(@barToLiquid, [initialTime, 10000], params.');
             T = T.';
             Y = Y.';
             blah = zeros(1, length(T));
@@ -118,9 +102,35 @@ function thermal()
             hold on;
             blah2 = zeros(1, length(T));
             for n = 1:length(T)
-                blah2(n) = Y(17, n);
+                blah2(n) = Y(18, n);
             end
-            plot(T, energyToTemperature(blah2, massOfSteam, specificHeatSteam), 'b');
+            plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
+
+%             [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
+%             T = T.';
+%             Y = Y.';
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(18, n);
+%             end
+%             plot(T, blah, 'b');
+
+
+%             [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+%             T = T.';
+%             Y = Y.';
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(21, n);
+%             end
+%             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+% %             plot(T, blah, 'b');
+%             hold on;
+%             blah2 = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah2(n) = Y(17, n);
+%             end
+%             plot(T, energyToTemperature(blah2, massOfSteam, specificHeatSteam), 'b');
 %             
 %             hold on;
             
