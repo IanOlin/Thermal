@@ -52,7 +52,7 @@ function thermal()
         
         barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
         steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
-        liquidEnergy = temperatureToEnergy(initialRoomTemperature, liquidMass, specificHeatLiquid);
+        liquidEnergy = temperatureToEnergy(400, liquidMass, specificHeatLiquid);
         %% time settings
         
         initialTime = 1;
@@ -76,7 +76,7 @@ function thermal()
         params(15) = heatOfVaporization;
         params(16) = massOfSteam;
         params(17) = steamEnergy;
-        params(18) = liquidEnergy;%this currently = stuff, need to establish actual energy value
+        params(18) = liquidEnergy;
         params(19) = liquidMass;
         params(20) = 0;% was liquidVolume
         params(21) = barEnergy;
@@ -85,14 +85,25 @@ function thermal()
 
         %% main
 %         for n = initialTime:finalTime
-%             barToSteam(barTemp, steamTemp, steamMass);
-%             steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass);
+%             barToSteam(barTemp, steamTemp, massOfSteam);
+%             steamToLiquid(steamTemp, liquidTemp, massOfSteam, liquidMass);
 %             liquidHeatLoss(liquidTemp, liquidMass);
 %   
 %         end
-            [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
-            plot(T, Y(17)*10^4);
+            [T, Y] = ode45(@liquidHeatLoss, [initialTime, 10], params.');
+            plot(T, Y(18), 'b');
             display(Y);
+
+    %%fuk u matlab, it works
+
+%         liquidEnergies = zeros(1, 100);
+%         for n = 1:100
+%             tempParams = barToSteam(1, params);
+%             liquidEnergies(n) = params(17) + tempParams(17)/100;
+%             params(17) = liquidEnergies(n);
+%         end
+%         plot(energyToTemperature(liquidEnergies, liquidMass, 4186));
+%         display(params(18));
         
 end
 
