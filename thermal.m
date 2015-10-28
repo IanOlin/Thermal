@@ -28,6 +28,9 @@ function thermal()
     steamHeatTransfer = stuff;
     thermalConductivityMug =1.5; %W/(m*K)
     steamLiquidCoefficient = 2800;%W/(mK), is bullshit
+    specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
+    specificHeatLiquid = 4186;%specific heat in joules per kg kelvin
+
         
         %initial teamp values (K)
         barTemp = 1500;
@@ -44,6 +47,17 @@ function thermal()
         
         initialTime = 1;
         finalTime = 1000;
+        
+        %% params
+        params(1) = lengthBar;
+        params(2) = diameterBar;
+        params(3) = volumeBar;
+        params(4) = surfaceAreaBar;
+        params(5) = specificHeatLiquid;
+        params(6) = specificHeatSteam;
+        params(7) = specificHeatBar;
+        params(8) = thermalConductivityMug;
+        params(9) = thicknessMug;
         
         %% main
         for n = initialTime:finalTime

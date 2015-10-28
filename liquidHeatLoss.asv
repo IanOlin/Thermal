@@ -1,9 +1,0 @@
-function shit = liquidHeatLoss(liquidTemp, liquidMass, liquidVolume)%needs temp, mass, volume of cider
-        airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
-        mugSA = (.04^2 * pi) + (liquidVolume * 2 / .04);%contact area with mug
-        mugThickness = .007;
-        thermalConductivity = 1.5;
-        conduction = 1.5 * mugSA * (liquidTemp - 290) / mugThickness;
-        
-        shit = 0;
-    end

@@ -1,5 +1,5 @@
 # Thermal 
 TODO:
-split the function into many functions
+Start passing variables, rather than rewriting them
 
-Out question is how much liquid we will heat.
+Our question is how much liquid we will heat.
