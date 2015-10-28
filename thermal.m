@@ -66,6 +66,7 @@ function thermal()
         params(12) = steamLiquidCoefficient;
         params(13) = barSteamTransferCoefficient;
         params(14) = massOfBar;
+        params(15) = heatOfVaporization;
         
         %% main
         for n = initialTime:finalTime
