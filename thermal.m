@@ -36,8 +36,7 @@ function thermal()
     densityOfSteam = 0.590; %kg/m^3
     volumeSteam = steamSA * thicknessSteam;
     massOfSteam = volumeSteam * densityOfSteam;
-    
-       barSteamTransferCoefficient = 50; %this is shit
+    barSteamTransferCoefficient = 50; %this is shit
 
         
         %initial teamp values (K)
@@ -61,30 +60,38 @@ function thermal()
         emissivityCoefficient = .25; %lol magic space rays
         
         %% params
-        params(1) = lengthBar;
-        params(2) = diameterBar;
-        params(3) = volumeBar;
-        params(4) = surfaceAreaBar;
-        params(5) = specificHeatLiquid;
-        params(6) = specificHeatSteam;
-        params(7) = specificHeatBar;
-        params(8) = thermalConductivityMug;
-        params(9) = thicknessMug;
-        params(10) = densityBar;
-        params(11) = steamSA;
-        params(12) = steamLiquidCoefficient;
-        params(13) = barSteamTransferCoefficient;
-        params(14) = massOfBar;
-        params(15) = heatOfVaporization;
-        params(16) = massOfSteam;
-        params(17) = steamEnergy;
-        params(18) = liquidEnergy;
-        params(19) = liquidMass;
-        params(20) = 0;% was liquidVolume
-        params(21) = barEnergy;
-        params(22) = thermalConductivitySteam;
-        params(23) = thicknessSteam;
-        params(24) = emissivityCoefficient;
+        params(1) = massOfBar;
+        params(2) = surfaceAreaBar;
+        params(3) = barEnergy;
+        params(4) = emissivityCoefficient;
+        params(5) = specificHeatBar;
+        params(6) = barSteamTransferCoefficient;
+        
+        params(7) = thermalConductivityMug;
+        params(8) = thicknessMug;
+        params(9) = heatOfVaporization;
+        params(10) = liquidEnergy;
+        params(11) = liquidMass;
+        params(12) = 0;% was liquidVolume
+        params(13) = specificHeatLiquid;
+        
+        params(14) = thermalConductivitySteam;
+        params(15) = thicknessSteam;
+        params(16) = steamSA;
+        
+        
+        
+%         params(16) = massOfSteam; %using barToLiquid makes this depreciated
+%         params(17) = steamEnergy;%using barToLiquid makes this depreciated
+%         params(12) = steamLiquidCoefficient;%using barToLiquid makes this depreciated
+%         params(6) = specificHeatSteam;%using barToLiquid makes this depreciated
+
+
+        %% stocks
+        
+        stocks(1) = barEnergy;
+        stocks(2) = steamEnergy;
+        stocks(3) = liquidEnergy;
         
         
 

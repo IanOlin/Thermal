@@ -1,5 +1,6 @@
 # Thermal 
 TODO:
-Get all flows to work
+Change ODE functions to take stocks and parameters.
+Check all of the rewritten parameters.
 
 Our question is how much liquid we will heat.

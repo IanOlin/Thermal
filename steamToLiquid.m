@@ -1,4 +1,4 @@
-function res = steamToLiquid(~, lazyParams)
+function res = steamToLiquid(~, lazyParams) %DEPRECIATED, params no longer aligned, needs to be updated
     params = lazyParams.';
     specificHeatLiquid = params(5);
     specificHeatSteam = params(6);

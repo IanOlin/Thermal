@@ -1,4 +1,5 @@
-function res = barToSteam(~, params)%current heat of bar, steam temp, non ode runnable
+function res = barToSteam(~, params)% DEPRECIATED, params are no longer aligned
+%Heat Transfer from bar to steam,
     params = params.';
     transferCoefficient = params(13); %this is shit
     specificHeatBar = params(7) ; %specific heat in joules per kg kelvin
