@@ -12,7 +12,7 @@ function res = barToSteam(~, params)%current heat of bar, steam temp, non ode ru
     newParams = zeros(1, length(params));
     newParams(21) = -conductionFlow;
     newParams(17) = conductionFlow;
-    res = conductionFlow;
+    res = newParams;
 end
     function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
