@@ -10,19 +10,20 @@ function thermal()
     %thermalConductivityBar = 46.6;% Thermal conductivity watts/meter kelvin
     
         %% size in contact with liquid
-    lengthBar = .05 ;%length of bar in meters
-    diameterBar = .04 ;%length of side of bar in meters
+    lengthBar = 5/100 ;%length of bar in meters
+    diameterBar = 4/100 ;%length of side of bar in meters
     volumeBar = pi*(diameterBar/2)^2*lengthBar; %volume
     surfaceAreaBar = pi * diameterBar * lengthBar + pi * (diameterBar/2)^2;
+    massOfBar = densityBar * volumeBar;
     
         %% size of mug
     diameterCider = 8/100; %meters
-    heatOfVaporization = 2257000 %J/kG
+    heatOfVaporization = 2256*10^3 %J/kG
     heightCider = 10/100; 
     thicknessMug = 0.7/100;
     
     %steam surface area
-    steamThickness = .01;
+    steamThickness = 1/100;
     steamSA = (lengthBar + 2 * steamThickness) * (pi * (diameterBar + 2 * steamThickness)) + 2 * pi * (diameterBar/2 + steamThickness)^2;
     %steam heat transfer coefficient
     steamHeatTransfer = stuff;
@@ -30,6 +31,8 @@ function thermal()
     steamLiquidCoefficient = 2800;%W/(mK), is bullshit
     specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
     specificHeatLiquid = 4186;%specific heat in joules per kg kelvin
+    
+       barSteamTransferCoefficient = 50; %this is shit
 
         
         %initial teamp values (K)
@@ -40,7 +43,7 @@ function thermal()
         initialRoomTemperature = 290;
         initialBarTemperature = 1500;
         
-        barEnergy = stuff;
+        barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
         steamEnergy = stuff;
         liquidEnergy = stuff;
         %% time settings
@@ -59,6 +62,10 @@ function thermal()
         params(8) = thermalConductivityMug;
         params(9) = thicknessMug;
         params(10) = densityBar;
+        params(11) = steamSA;
+        params(12) = steamLiquidCoefficient;
+        params(13) = barSteamTransferCoefficient;
+        params(14) = massOfBar;
         
         %% main
         for n = initialTime:finalTime
