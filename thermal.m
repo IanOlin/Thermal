@@ -22,6 +22,7 @@ function thermal()
     heightCider = 10/100; 
     thicknessMug = 0.7/100;
     
+    thermalConductivitySteam = .00185;
     
     %steam surface area
     thicknessSteam = 1/100;
@@ -80,6 +81,8 @@ function thermal()
         params(19) = liquidMass;
         params(20) = 0;% was liquidVolume
         params(21) = barEnergy;
+        params(22) = thermalConductivitySteam;
+        params(23) = thicknessSteam;
         
         
 
