@@ -23,14 +23,17 @@ function thermal()
     thicknessMug = 0.7/100;
     
     %steam surface area
-    steamThickness = 1/100;
-    steamSA = (lengthBar + 2 * steamThickness) * (pi * (diameterBar + 2 * steamThickness)) + 2 * pi * (diameterBar/2 + steamThickness)^2;
+    thicknessSteam = 1/100;
+    steamSA = (lengthBar + thicknessSteam) * (pi * (diameterBar + 2 * thicknessSteam)) + 2 * pi * (diameterBar/2 + thicknessSteam)^2;
     %steam heat transfer coefficient
     steamHeatTransfer = stuff;
     thermalConductivityMug =1.5; %W/(m*K)
     steamLiquidCoefficient = 2800;%W/(mK), is bullshit
     specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
     specificHeatLiquid = 4186;%specific heat in joules per kg kelvin
+    densityOfSteam = 0.590; %kg/m^3
+    volumeSteam = steamSA * thicknessSteam;
+    massOfSteam = volumeSteam * densityOfSteam;
     
        barSteamTransferCoefficient = 50; %this is shit
 
@@ -67,16 +70,14 @@ function thermal()
         params(13) = barSteamTransferCoefficient;
         params(14) = massOfBar;
         params(15) = heatOfVaporization;
+        params(16) = massOfSteam;
         
         %% main
         for n = initialTime:finalTime
             barToSteam(barTemp, steamTemp, steamMass);
             steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass);
             liquidHeatLoss(liquidTemp, liquidMass);
-            
-            
-            
-            
+  
         end
         
 end
