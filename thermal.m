@@ -58,6 +58,7 @@ function thermal()
         params(7) = specificHeatBar;
         params(8) = thermalConductivityMug;
         params(9) = thicknessMug;
+        params(10) = densityBar;
         
         %% main
         for n = initialTime:finalTime

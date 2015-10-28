@@ -1,4 +1,4 @@
-function res = liquidHeatLoss(liquidEnergy, liquidMass, liquidVolume)%needs temp, mass, volume of cider
+function res = liquidHeatLoss(liquidEnergy, liquidMass, liquidVolume, params)%needs temp, mass, volume of cider
         airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
         mugSA = (.04^2 * pi) + (liquidVolume * 2 / .04);%contact area with mug
         mugThickness = params(9);
@@ -10,9 +10,11 @@ function res = liquidHeatLoss(liquidEnergy, liquidMass, liquidVolume)%needs temp
         
         res = conduction + convection;
 end
+
      function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
-    end
+     end
+    
     function res = heatCapacity(mass, specificHeat)
         res = mass * specificHeat;
     end
