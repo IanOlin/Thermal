@@ -47,7 +47,7 @@ function thermal()
         initialBarTemperature = 1500;
         
         barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
-        steamEnergy = stuff;
+        steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
         liquidEnergy = stuff;
         %% time settings
         
@@ -71,6 +71,7 @@ function thermal()
         params(14) = massOfBar;
         params(15) = heatOfVaporization;
         params(16) = massOfSteam;
+        params(17) = steamEnergy;
         
         %% main
         for n = initialTime:finalTime
