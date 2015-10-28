@@ -58,6 +58,7 @@ function thermal()
         
         initialTime = 1;
         finalTime = 1000;
+        emissivityCoefficient = .25; %lol magic space rays
         
         %% params
         params(1) = lengthBar;
@@ -83,6 +84,7 @@ function thermal()
         params(21) = barEnergy;
         params(22) = thermalConductivitySteam;
         params(23) = thicknessSteam;
+        params(24) = emissivityCoefficient;
         
         
 
