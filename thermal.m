@@ -18,15 +18,16 @@ function thermal()
     
         %% size of mug
     diameterCider = 8/100; %meters
-    heatOfVaporization = 2256*10^3 %J/kG
+    heatOfVaporization = 2256*10^3; %J/kG
     heightCider = 10/100; 
     thicknessMug = 0.7/100;
+    
     
     %steam surface area
     thicknessSteam = 1/100;
     steamSA = (lengthBar + thicknessSteam) * (pi * (diameterBar + 2 * thicknessSteam)) + 2 * pi * (diameterBar/2 + thicknessSteam)^2;
     %steam heat transfer coefficient
-    steamHeatTransfer = stuff;
+%     steamHeatTransfer = stuff;
     thermalConductivityMug =1.5; %W/(m*K)
     steamLiquidCoefficient = 2800;%W/(mK), is bullshit
     specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
@@ -41,14 +42,17 @@ function thermal()
         %initial teamp values (K)
         barTemp = 1500;
         steamTemp = 400;
+        liquidDensity = 1000;
         liquidTemp = 290;
+        liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
+        liquidMass = liquidVolume * liquidDensity;
         %% temperature
         initialRoomTemperature = 290;
         initialBarTemperature = 1500;
         
         barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
         steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
-        liquidEnergy = stuff;
+        liquidEnergy = temperatureToEnergy(initialRoomTemperature, liquidMass, specificHeatLiquid);
         %% time settings
         
         initialTime = 1;
@@ -80,12 +84,15 @@ function thermal()
         
 
         %% main
-        for n = initialTime:finalTime
-            barToSteam(barTemp, steamTemp, steamMass);
-            steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass);
-            liquidHeatLoss(liquidTemp, liquidMass);
-  
-        end
+%         for n = initialTime:finalTime
+%             barToSteam(barTemp, steamTemp, steamMass);
+%             steamToLiquid(steamTemp, liquidTemp, steamMass, liquidMass);
+%             liquidHeatLoss(liquidTemp, liquidMass);
+%   
+%         end
+            [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+            plot(T, Y(17)*10^4);
+            display(Y);
         
 end
 
