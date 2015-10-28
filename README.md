@@ -1,5 +1,5 @@
 # Thermal 
 TODO:
-Start passing variables, rather than rewriting them
+Get all flows to work
 
 Our question is how much liquid we will heat.
