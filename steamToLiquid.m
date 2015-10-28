@@ -1,4 +1,5 @@
-function res = steamToLiquid(~, params)
+function res = steamToLiquid(~, lazyParams)
+    params = lazyParams.';
     specificHeatLiquid = params(5);
     specificHeatSteam = params(6);
     steamSA = params(11);
@@ -8,7 +9,7 @@ function res = steamToLiquid(~, params)
     steamMass = params(16);
     liquidMass = params(19);
     deltaTemp = energyToTemperature(steamEnergy, steamMass, specificHeatSteam) - energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
-    flow = steamLiquidCoefficient * steamSA * deltaTemp/10; 
+    flow = steamLiquidCoefficient * steamSA * deltaTemp; 
     newParams = zeros(1, length(params));
     newParams(18) = flow;
     newParams(17) = -flow;

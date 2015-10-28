@@ -41,7 +41,7 @@ function thermal()
         
         %initial teamp values (K)
         barTemp = 1500;
-        steamTemp = 400;
+        steamTemp = 380;
         liquidDensity = 1000;
         liquidTemp = 290;
         liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
@@ -52,7 +52,7 @@ function thermal()
         
         barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
         steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
-        liquidEnergy = temperatureToEnergy(400, liquidMass, specificHeatLiquid);
+        liquidEnergy = temperatureToEnergy(liquidTemp, liquidMass, specificHeatLiquid);
         %% time settings
         
         initialTime = 1;
@@ -91,24 +91,31 @@ function thermal()
 %   
 %         end
 
-            [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
-            T = T.';
-            Y = Y.';
-            blah = zeros(1, length(T));
-            for n = 1:length(T)
-                blah(n) = Y(17, n);
-            end
-            plot(T, blah, 'b');
-
-
-%             [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+%             [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
 %             T = T.';
 %             Y = Y.';
 %             blah = zeros(1, length(T));
 %             for n = 1:length(T)
-%                 blah(n) = Y(17, n);
+%                 blah(n) = Y(18, n);
 %             end
 %             plot(T, blah, 'b');
+
+
+            [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');
+            T = T.';
+            Y = Y.';
+            blah = zeros(1, length(T));
+            for n = 1:length(T)
+                blah(n) = Y(21, n);
+            end
+            plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+%             plot(T, blah, 'b');
+            hold on;
+            blah2 = zeros(1, length(T));
+            for n = 1:length(T)
+                blah2(n) = Y(17, n);
+            end
+            plot(T, energyToTemperature(blah2, massOfSteam, specificHeatSteam), 'b');
 %             
 %             hold on;
             
