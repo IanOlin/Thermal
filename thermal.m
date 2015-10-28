@@ -91,8 +91,14 @@ function thermal()
 %   
 %         end
             [T, Y] = ode45(@liquidHeatLoss, [initialTime, 10], params.');
-            plot(T, Y(18), 'b');
-            display(Y);
+            T = T.';
+            Y = Y.';
+            blah = zeros(1, 49);
+            for n = 1:49
+                blah(n) = Y(18, n);
+            end
+            plot(T, blah, 'b');
+            display(Y(18));
 
     %%fuk u matlab, it works
 
