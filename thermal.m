@@ -74,7 +74,7 @@ function thermal()
         params(17) = steamEnergy;
         params(18) = liquidEnergy;%this currently = stuff, need to establish actual energy value
         params(19) = liquidMass;
-        params(20) = liquidVolume;
+        params(20) = 0;% was liquidVolume
         params(21) = barEnergy;
         
         
