@@ -93,23 +93,48 @@ function thermal()
         
 
         %% main
-        
-            [T, Y] = ode45(@barToLiquid, [initialTime, 10000], params.');
-            T = T.';
-            Y = Y.';
-            blah = zeros(1, length(T));
-            for n = 1:length(T)
-                blah(n) = Y(3, n);
+        %used ode45
+%             [T, Y] = ode45(@barToLiquid, [initialTime, 10000], params.');
+%             T = T.';
+%             Y = Y.';
+            
+         %use for loop
+            T = zeros(1, 1000);
+            Y = zeros(1, 1000);
+            for n = 1:1000
+                temp = barToLiquid(6969, params.');
+                params = params + temp.';
+                T(n) = n;
+                Y(n) = energyToTemperature(params(10), params(11), params(13));
+                deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
+                temp2 = [0 0];
+                if(deltaEnergy > 0)
+                    temp2 = phaseChange(deltaEnergy, params);
+%                     display(temp2);
+                end
+                params(10) = params(10) - temp2(1);
+                params(11) = params(11) - temp2(2);
             end
-            plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
-%             plot(T, blah, 'b');
-            hold on;
-            blah2 = zeros(1, length(T));
-            for n = 1:length(T)
-                blah2(n) = Y(10, n);
-            end
-            plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
+            plot(T,Y);
 
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(3, n);
+%             end
+%             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+% %             plot(T, blah, 'b');
+%             hold on;
+%             blah2 = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah2(n) = Y(10, n);
+%             end
+%             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
+
+            
+            
+            
+            
+            
 %             [T, Y] = ode45(@steamToLiquid, [initialTime, 10], params.'); %works perfectly
 %             T = T.';
 %             Y = Y.';

@@ -1,9 +1,13 @@
-function res = phaseChange(netHeat, params)%Out of date, did not up date, please use real variables. TT
+function res = phaseChange(netHeat, params)%Out of date, did not up date, please use real variables. no
         %q=m*heatofvaporization
-        energyTransfer = params(5) * waterMass * energyToTemperature(netHeat, netHeat/(params(5) * 373), params(5));%transfer from water to steam, dQ = c*m*dt where c is specific heat, because water is at boiling point mass is energy/(c*373K)
-        massTransfer = -energyTransfer/params(15);
+        specificHeatLiquid = params(13);
+        liquidMass = params(11);
+        latentHeat = params(9);
+        energyTransfer = netHeat;
+%         energyTransfer = specificHeatLiquid * liquidMass * energyToTemperature(netHeat, netHeat/(specificHeatLiquid * 373), specificHeatLiquid);%transfer from water to steam, dQ = c*m*dt where c is specific heat, because water is at boiling point mass is energy/(c*373K)
+        massTransfer = netHeat/latentHeat;
         res = [energyTransfer, massTransfer];
-        
+        display(massTransfer);
         
 end
     
