@@ -102,14 +102,14 @@ function thermal()
             Y = Y.';
             blah = zeros(1, length(T));
             for n = 1:length(T)
-                blah(n) = Y(21, n);
+                blah(n) = Y(3, n);
             end
             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
 %             plot(T, blah, 'b');
             hold on;
             blah2 = zeros(1, length(T));
             for n = 1:length(T)
-                blah2(n) = Y(18, n);
+                blah2(n) = Y(10, n);
             end
             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
 
