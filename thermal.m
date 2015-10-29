@@ -46,9 +46,6 @@ function thermal()
         liquidTemp = 290;
         liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
         liquidMass = liquidVolume * liquidDensity;
-        %% temperature
-        initialRoomTemperature = 290;
-        initialBarTemperature = 1500;
         
         barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
         steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);

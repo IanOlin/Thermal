@@ -2,7 +2,7 @@ function res = barToLiquid (~, params)%models bar losing heat to liquid through 
     params = params.';
     
     barEnergy = params(3);
-    liquidEnergy = params(11);
+    liquidEnergy = params(10);
     thermalConductivitySteam = params(14);
     thicknessSteam = params(15);
     steamSA = params(16);
@@ -18,10 +18,8 @@ function res = barToLiquid (~, params)%models bar losing heat to liquid through 
     radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
     flowParams = zeros(1, length(params));
     flowParams(3) = -conduction - radiation;
-    flowParams(11) = conduction + radiation;
+    flowParams(10) = conduction + radiation;
     res = flowParams.';
-    display(radiation);
-    display(conduction); %fuk u matlab
 end
 
     function res = energyToTemperature(U, m, c)
