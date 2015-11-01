@@ -1,6 +1,5 @@
 # Thermal 
 TODO:
-Change ODE functions to take stocks and parameters.
-Check all of the rewritten parameters.
+Get netflow to handle mass and finialize our visualizations
 
 Our question is how much liquid we will heat.
