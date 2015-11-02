@@ -44,10 +44,16 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     
 
     
-    flowParams(3) = (-conductionBTL - radiation)/1000;
-    flowParams(10) = (conductionBTL + radiation + flowParamsLHL  + massChange(1))/1000;
+    flowParams(3) = (-conductionBTL - radiation);
+    flowParams(10) = (conductionBTL + radiation + flowParamsLHL + massChange(1));
     flowParams(11) = massChange(2);
     res = flowParams.';
+%     display(conductionBTL);
+%     display(radiation);
+%     display(massChange(1));
+    display(liquidTemp);
+    display(conductionLHL);
+%     display(convectionLHL);
 end
 
     function res = energyToTemperature(U, m, c)

@@ -71,7 +71,7 @@ function thermal()
 
         %% main
             tspan = 0:1:finalTime;
-            [T, Y] = ode45(@netFlow, tspan, params.');
+            [T, Y] = ode23(@netFlow, tspan, params.');
             T = T.';
             Y = Y.';
             blah = zeros(1, length(T));
