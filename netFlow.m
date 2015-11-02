@@ -46,13 +46,19 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     end
 
 %     liquidEnergy = liquidEnergy - massChange(1);
+    betterDeltaEnergy = temperatureToEnergy(373, liquidMass, specificHeatLiquid) - liquidEnergy;
+    workDamnit = 0;
+    if(betterDeltaEnergy > 0)
+        workDamnit = betterDeltaEnergy;
+    end
+    
     
     flowParams(3) = -conductionBTL - radiation;
-    flowParams(10) = conductionBTL + radiation + flowParamsLHL + massChange(1);
+    flowParams(10) = conductionBTL + radiation + flowParamsLHL + massChange(1) + workDamnit;
 %     flowParams(10) = liquidEnergy;
     flowParams(11) = -massChange(2);
     res = flowParams.';
-%     display(res);
+%     display(flowParams(11));
 end
 
     function res = energyToTemperature(U, m, c)

@@ -119,22 +119,43 @@ function thermal()
 %                 params(11) = params(11) - temp2(2);
 %             end
 %             plot(T,Y);
-        %% commented out code
-            [T, Y] = ode45(@netFlow, [initialTime, finalTime], params.');
-            T = T.';
-            Y = Y.';
-            blah = zeros(1, length(T));
-            for n = 1:length(T)
-                blah(n) = Y(3, n);
+
+        %% fuck matlab
+            T = zeros(1, finalTime);
+            Y = zeros(1, finalTime);
+            Z = zeros(1, finalTime);
+            M = zeros(1, finalTime);
+            for n = 1:finalTime
+                temp = netFlow(6969, params.');
+                temp2 = temp.';
+                params = params + temp2;
+                params(10) = params(10) - .99 * temp2(10);
+                T(n) = n;
+                Y(n) = energyToTemperature(params(10), params(11), params(13));
+                Z(n) = energyToTemperature(params(3), params(1), params(5));
+                M(n) = params(11);
             end
-            plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
-%             plot(T, blah, 'b');
+%             plot(T, Y);
             hold on;
-            blah2 = zeros(1, length(T));
-            for n = 1:length(T)
-                blah2(n) = Y(10, n);
-            end
-            plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
+%             plot(T, Z);
+            plot(T, M);
+        %% commented out code
+%             [T, Y] = ode45(@netFlow, [initialTime, finalTime], params.');
+%             T = T.';
+%             Y = Y.';
+           
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(3, n);
+%             end
+%             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+% %             plot(T, blah, 'b');
+%             hold on;
+%             blah2 = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah2(n) = Y(10, n);
+%             end
+%             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
             
             
             
