@@ -1,7 +1,7 @@
 function res = netFlow(~, params) %doesn't account for mass loss because we are bad and everything sucks.
     params = params.';
     airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
-    mugSA = .01;%temp SA
+    mugSA = airSA*1.2;%temp SA
 
     massOfBar = params(1);
     
@@ -18,41 +18,36 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     thicknessSteam = params(15);
     steamSA = params(16);
     
+    barTemp = energyToTemperature(barEnergy, massOfBar, specificHeatBar);
+    liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
     
     
     
     thermalHeatCoefficient = 10;%shitshitshitshitshitshitshitshitshitshitshitshit
-    conductionLHL = thermalConductivity * mugSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290) / mugThickness;
-    convectionLHL = thermalHeatCoefficient * airSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290);
+    conductionLHL = thermalConductivity * mugSA * ( liquidTemp - 290) / mugThickness;
+    convectionLHL = thermalHeatCoefficient * airSA * (liquidTemp - 290);
     flowParams = zeros(1, length(params));
     flowParamsLHL = -(conductionLHL + convectionLHL);
-%     display(conductionLHL)
-%     display(convectionLHL)
-
 
     deltaT = energyToTemperature(barEnergy, massOfBar, specificHeatBar) - energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
     conductionBTL = thermalConductivitySteam * steamSA * deltaT / thicknessSteam;
-    barTemp = energyToTemperature(barEnergy, massOfBar, specificHeatBar);
-    liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
+
     deltaRT = barTemp^4 - liquidTemp^4;
     radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
 
-%     liquidEnergy = liquidEnergy + radiation + conductionBTL + flowParamsLHL;
     
     deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
     massChange = [0, 0];
     if deltaEnergy > 0
-        massChange = phaseChange(deltaEnergy, params);
+        massChange = -phaseChange(deltaEnergy, params);
     end
-
-%     liquidEnergy = liquidEnergy - massChange(1);
     
-    flowParams(3) = -conductionBTL - radiation;
-    flowParams(10) = conductionBTL + radiation + flowParamsLHL + massChange(1);
-%     flowParams(10) = liquidEnergy;
-    flowParams(11) = -massChange(2);
+
+    
+    flowParams(3) = (-conductionBTL - radiation)/1000;
+    flowParams(10) = (conductionBTL + radiation + flowParamsLHL  + massChange(1))/1000;
+    flowParams(11) = massChange(2);
     res = flowParams.';
-%     display(res);
 end
 
     function res = energyToTemperature(U, m, c)
