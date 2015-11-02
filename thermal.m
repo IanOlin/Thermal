@@ -45,7 +45,7 @@ function thermal()
         %% time settings
 
     initialTime = 1;
-    finalTime = 1000;
+    finalTime = 2500;
     emissivityCoefficient = .25; %lol magic space rays
     thermalConductivitySteam = .00185;
         
@@ -99,9 +99,7 @@ function thermal()
 
         %% main
         %used ode45
-%             [T, Y] = ode45(@barToLiquid, [initialTime, 10000], params.');
-%             T = T.';
-%             Y = Y.';
+
             
          %use for loop for liquid energy, includes mass changes
 %             T = zeros(1, 1000);
@@ -122,30 +120,33 @@ function thermal()
 %             end
 %             plot(T,Y);
         %% commented out code
-%             blah = zeros(1, length(T));
-%             for n = 1:length(T)
-%                 blah(n) = Y(3, n);
-%             end
-%             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
-% %             plot(T, blah, 'b');
-%             hold on;
-%             blah2 = zeros(1, length(T));
-%             for n = 1:length(T)
-%                 blah2(n) = Y(10, n);
-%             end
-%             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
-            
-            
-            
-            
-            [T, Y] = ode45(@netFlow, [initialTime, 1000], params.'); %works perfectly
+            [T, Y] = ode45(@netFlow, [initialTime, finalTime], params.');
             T = T.';
             Y = Y.';
             blah = zeros(1, length(T));
             for n = 1:length(T)
-                blah(n) = Y(10, n);
+                blah(n) = Y(3, n);
             end
-            plot(T, blah, 'b');
+            plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+%             plot(T, blah, 'b');
+            hold on;
+            blah2 = zeros(1, length(T));
+            for n = 1:length(T)
+                blah2(n) = Y(10, n);
+            end
+            plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
+            
+            
+            
+            
+%             [T, Y] = ode45(@netFlow, [initialTime, 1000], params.'); %works perfectly
+%             T = T.';
+%             Y = Y.';
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(10, n);
+%             end
+%             plot(T, blah, 'b');
 
 
 %             [T, Y] = ode45(@barToSteam, [initialTime, 10], params.');

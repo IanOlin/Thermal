@@ -1,7 +1,7 @@
 function res = netFlow(~, params) %doesn't account for mass loss because we are bad and everything sucks.
     params = params.';
     airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
-    mugSA = 10;%temp SA
+    mugSA = .01;%temp SA
 
     massOfBar = params(1);
     
@@ -26,6 +26,8 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     convectionLHL = thermalHeatCoefficient * airSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290);
     flowParams = zeros(1, length(params));
     flowParamsLHL = -(conductionLHL + convectionLHL);
+    display(conductionLHL)
+    display(convectionLHL)
 
 
 
@@ -35,8 +37,7 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
     deltaRT = barTemp^4 - liquidTemp^4;
     radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
-    display(barTemp);
-    display(liquidTemp);
+
     
     deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
     massChange = [0, 0];
