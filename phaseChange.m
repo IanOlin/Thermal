@@ -7,7 +7,7 @@ function res = phaseChange(netHeat, params)%Out of date, did not up date, please
 %         energyTransfer = specificHeatLiquid * liquidMass * energyToTemperature(netHeat, netHeat/(specificHeatLiquid * 373), specificHeatLiquid);%transfer from water to steam, dQ = c*m*dt where c is specific heat, because water is at boiling point mass is energy/(c*373K)
         massTransfer = netHeat/latentHeat;
         res = [energyTransfer, massTransfer];
-        display(massTransfer);
+%         display(massTransfer);
         
 end
     
