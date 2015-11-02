@@ -89,11 +89,11 @@ function thermal()
 
 
         %% stocks
-        
-        stocks(1) = barEnergy;
-        stocks(2) = steamEnergy;
-        stocks(3) = liquidEnergy;
-        
+
+    stocks(1) = barEnergy;
+    stocks(2) = steamEnergy;
+    stocks(3) = liquidEnergy;
+
         
 
         %% main
@@ -103,22 +103,22 @@ function thermal()
 %             Y = Y.';
             
          %use for loop
-            T = zeros(initialTime, finalTime);
-            Y = zeros(initialTime, finalTime);
-            for n = initialTime:finalTime
-                temp = barToLiquid(6969, params.');
-                params = params + temp.';
-                T(n) = n;
-                Y(n) = energyToTemperature(params(10), params(11), params(13));
-                deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
-                temp2 = [0 0];
-                if(deltaEnergy > 0)
-                    temp2 = phaseChange(deltaEnergy, params);
-                end
-                params(10) = params(10) - temp2(1);
-                params(11) = params(11) - temp2(2);
-            end
-            plot(T,Y);
+    T = zeros(initialTime, finalTime);
+    Y = zeros(initialTime, finalTime);
+    for n = initialTime:finalTime
+        temp = barToLiquid(6969, params.');
+        params = params + temp.';
+        T(n) = n;
+        Y(n) = energyToTemperature(params(10), params(11), params(13));
+        deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
+        temp2 = [0 0];
+        if(deltaEnergy > 0)
+            temp2 = phaseChange(deltaEnergy, params);
+        end
+        params(10) = params(10) - temp2(1);
+        params(11) = params(11) - temp2(2);
+    end
+    plot(T,Y);
         %% commented out code
 %             blah = zeros(1, length(T));
 %             for n = 1:length(T)

@@ -34,12 +34,11 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     res = flowParams.';
 end
 
-     function res = energyToTemperature(U, m, c)
+    function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
      end
-    
+
     function res = heatCapacity(mass, specificHeat)
         res = mass * specificHeat;
     end
     
-end
