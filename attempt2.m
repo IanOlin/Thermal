@@ -2,7 +2,7 @@ function shit = attempt2
 
 
 
-    finalTime = 5000;
+    finalTime = 100;
     
     T = zeros(1, finalTime);
     liquidTemps = zeros(1, finalTime);
@@ -76,7 +76,7 @@ function shit = attempt2
             massChange = deltaEnergy / heatOfVaporization;
         end
         
-        conductionLHL = 0;%fuck this
+%         conductionLHL = 0;%fuck this
         energyFlowLiquid = conductionBTL + radiation - conductionLHL - convectionLHL - massEnergy;
         energyFlowBar = conductionBTL + radiation / .9;
         
@@ -90,12 +90,13 @@ function shit = attempt2
         barTemps(n) = energyToTemperature(barEnergy, barMass, specificHeatBar);
         liquidMasses(n) = liquidMass;
         
-        display(conductionLHL);
+        display(massEnergy);
     end
     
     hold on;
-%     plot(T, liquidTemps);
-%     plot(T, barTemps);
+    plot(T, liquidTemps);
+    plot(T, barTemps);
+    figure
     plot(T, liquidMasses);
 end
 function res = energyToTemperature(U, m, c)
