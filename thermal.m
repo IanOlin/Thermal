@@ -45,7 +45,7 @@ function thermal()
         %% time settings
 
     initialTime = 1;
-    finalTime = 2500;
+    finalTime = 1000;
     emissivityCoefficient = .25; %lol magic space rays
     thermalConductivitySteam = .00185;
         
