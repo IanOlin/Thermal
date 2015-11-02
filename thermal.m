@@ -1,13 +1,8 @@
 function thermal()  
-        %shitload of variables for bar
-    %type of iron is 5160 medium carbon steel (.55-.65% carbon)
-    %http://www.matweb.com/search/datasheet.aspx?MatGUID=972ec49b746d47c2a31db406e9213247
-    %http://www.wolframalpha.com/input/?i=5160+steel
-    %TI = 2200
         %% iron bar
     specificHeatBar = 475 ; %specific heat in joules per kg kelvin
     densityBar = 7850; %density in kg per meter cubed
-    %thermalConductivityBar = 46.6;% Thermal conductivity watts/meter kelvin
+
     
         %% size in contact with liquid
     lengthBar = 5/100 ;%length of bar in meters
@@ -22,15 +17,14 @@ function thermal()
     heightCider = 10/100; 
     thicknessMug = 0.7/100;
     
-    thermalConductivitySteam = .00185;
+
     
-    %steam surface area
+    %% steam surface area
     thicknessSteam = 1/100;
     steamSA = (lengthBar + thicknessSteam) * (pi * (diameterBar + 2 * thicknessSteam)) + 2 * pi * (diameterBar/2 + thicknessSteam)^2;
-    %steam heat transfer coefficient
-%     steamHeatTransfer = stuff;
+
     thermalConductivityMug =1.5; %W/(m*K)
-    steamLiquidCoefficient = 2800;%W/(mK), is bullshit
+
     specificHeatSteam = 1865;%%specific heat in joules per kg kelvin
     specificHeatLiquid = 4186;%specific heat in joules per kg kelvin
     densityOfSteam = 0.590; %kg/m^3
@@ -38,46 +32,56 @@ function thermal()
     massOfSteam = volumeSteam * densityOfSteam;
     barSteamTransferCoefficient = 50; %this is shit
 
-        
-        %initial teamp values (K)
-        barTemp = 1500;
-        steamTemp = 380;
-        liquidDensity = 1000;
-        liquidTemp = 290;
-        liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
-        liquidMass = liquidVolume * liquidDensity;
-        
-        barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
-        steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
-        liquidEnergy = temperatureToEnergy(liquidTemp, liquidMass, specificHeatLiquid);
+    barTemp = 1500;
+    steamTemp = 380;
+    liquidDensity = 1000;
+    liquidTemp = 290;
+    liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
+    liquidMass = liquidVolume * liquidDensity;
+
+    barEnergy = temperatureToEnergy(barTemp, massOfBar, specificHeatBar);
+    steamEnergy = temperatureToEnergy(steamTemp, massOfSteam, specificHeatSteam);
+    liquidEnergy = temperatureToEnergy(liquidTemp, liquidMass, specificHeatLiquid);
         %% time settings
-        
-        initialTime = 1;
-        finalTime = 1000;
-        emissivityCoefficient = .25; %lol magic space rays
+
+    initialTime = 1;
+    finalTime = 1000;
+    emissivityCoefficient = .25; %lol magic space rays
         
         %% params
-        params(1) = massOfBar;
-        params(2) = surfaceAreaBar;
-        params(3) = barEnergy;
-        params(4) = emissivityCoefficient;
-        params(5) = specificHeatBar;
-        params(6) = barSteamTransferCoefficient;
+    params(1) = massOfBar;
+    params(2) = surfaceAreaBar;
+    params(3) = barEnergy;
+    params(4) = emissivityCoefficient;
+    params(5) = specificHeatBar;
+    params(6) = barSteamTransferCoefficient;
+
+    params(7) = thermalConductivityMug;
+    params(8) = thicknessMug;
+    params(9) = heatOfVaporization;
+    params(10) = liquidEnergy;
+    params(11) = liquidMass;
+    params(12) = 0;% was liquidVolume
+    params(13) = specificHeatLiquid;
+
+    params(14) = thermalConductivitySteam;
+    params(15) = thicknessSteam;
+    params(16) = steamSA;
+
+        %% depriciated variables
+        %    thermalConductivitySteam = .00185;
+            %steam heat transfer coefficient
+%     steamHeatTransfer = stuff;
+    %thermalConductivityBar = 46.6;% Thermal conductivity watts/meter kelvin
         
-        params(7) = thermalConductivityMug;
-        params(8) = thicknessMug;
-        params(9) = heatOfVaporization;
-        params(10) = liquidEnergy;
-        params(11) = liquidMass;
-        params(12) = 0;% was liquidVolume
-        params(13) = specificHeatLiquid;
+        %initial teamp values (K)
+%             steamLiquidCoefficient = 2800;%W/(mK), is bullshit
         
-        params(14) = thermalConductivitySteam;
-        params(15) = thicknessSteam;
-        params(16) = steamSA;
-        
-        
-        
+                %shitload of variables for bar
+    %type of iron is 5160 medium carbon steel (.55-.65% carbon)
+    %http://www.matweb.com/search/datasheet.aspx?MatGUID=972ec49b746d47c2a31db406e9213247
+    %http://www.wolframalpha.com/input/?i=5160+steel
+    %TI = 2200
 %         params(16) = massOfSteam; %using barToLiquid makes this depreciated
 %         params(17) = steamEnergy;%using barToLiquid makes this depreciated
 %         params(12) = steamLiquidCoefficient;%using barToLiquid makes this depreciated
@@ -99,9 +103,9 @@ function thermal()
 %             Y = Y.';
             
          %use for loop
-            T = zeros(1, 1000);
-            Y = zeros(1, 1000);
-            for n = 1:1000
+            T = zeros(initialTime, finalTime);
+            Y = zeros(initialTime, finalTime);
+            for n = initialTime:finalTime
                 temp = barToLiquid(6969, params.');
                 params = params + temp.';
                 T(n) = n;
@@ -110,13 +114,12 @@ function thermal()
                 temp2 = [0 0];
                 if(deltaEnergy > 0)
                     temp2 = phaseChange(deltaEnergy, params);
-%                     display(temp2);
                 end
                 params(10) = params(10) - temp2(1);
                 params(11) = params(11) - temp2(2);
             end
             plot(T,Y);
-
+        %% commented out code
 %             blah = zeros(1, length(T));
 %             for n = 1:length(T)
 %                 blah(n) = Y(3, n);
