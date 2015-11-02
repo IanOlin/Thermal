@@ -45,7 +45,7 @@ function thermal()
         %% time settings
 
     initialTime = 1;
-    finalTime = 1000;
+    finalTime = 5000;
     emissivityCoefficient = .25; %lol magic space rays
     thermalConductivitySteam = .00185;
         
@@ -135,10 +135,10 @@ function thermal()
                 Z(n) = energyToTemperature(params(3), params(1), params(5));
                 M(n) = params(11);
             end
-%             plot(T, Y);
+            plot(T, Y);
             hold on;
-%             plot(T, Z);
-            plot(T, M);
+            plot(T, Z);
+%             plot(T, M);
         %% commented out code
 %             [T, Y] = ode45(@netFlow, [initialTime, finalTime], params.');
 %             T = T.';

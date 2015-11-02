@@ -1,7 +1,7 @@
 function res = netFlow(~, params) %doesn't account for mass loss because we are bad and everything sucks.
     params = params.';
     airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
-    mugSA = .01;%temp SA
+    mugSA = .1 * pi * .08 + pi * .04^2;%temp SA
 
     massOfBar = params(1);
     
@@ -35,7 +35,7 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     barTemp = energyToTemperature(barEnergy, massOfBar, specificHeatBar);
     liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
     deltaRT = barTemp^4 - liquidTemp^4;
-    radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
+    radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9 ;%not all radiation goes directly to water
 
 %     liquidEnergy = liquidEnergy + radiation + conductionBTL + flowParamsLHL;
     
@@ -44,21 +44,24 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     if deltaEnergy > 0
         massChange = phaseChange(deltaEnergy, params);
     end
-
+%     display(deltaEnergy);
+    
 %     liquidEnergy = liquidEnergy - massChange(1);
     betterDeltaEnergy = temperatureToEnergy(373, liquidMass, specificHeatLiquid) - liquidEnergy;
     workDamnit = 0;
     if(betterDeltaEnergy > 0)
         workDamnit = betterDeltaEnergy;
     end
-    
+%     display(betterDeltaEnergy);
     
     flowParams(3) = -conductionBTL - radiation;
     flowParams(10) = conductionBTL + radiation + flowParamsLHL + massChange(1) + workDamnit;
 %     flowParams(10) = liquidEnergy;
     flowParams(11) = -massChange(2);
     res = flowParams.';
-%     display(flowParams(11));
+    display(conductionLHL);
+    display(radiation);
+    display(conductionBTL);
 end
 
     function res = energyToTemperature(U, m, c)
