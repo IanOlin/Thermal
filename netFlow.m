@@ -19,15 +19,19 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     steamSA = params(16);
     
     
-    
+    deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
+    massChange = [0, 0];
+    if deltaEnergy > 0
+        massChange = phaseChange(deltaEnergy, params);
+    end
 
     thermalHeatCoefficient = 10;%shitshitshitshitshitshitshitshitshitshitshitshit
     conductionLHL = thermalConductivity * mugSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290) / mugThickness;
     convectionLHL = thermalHeatCoefficient * airSA * (energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid) - 290);
     flowParams = zeros(1, length(params));
     flowParamsLHL = -(conductionLHL + convectionLHL);
-    display(conductionLHL)
-    display(convectionLHL)
+%     display(conductionLHL)
+%     display(convectionLHL)
 
 
 
@@ -39,15 +43,11 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
 
     
-    deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
-    massChange = [0, 0];
-    if deltaEnergy > 0
-%         massChange = phaseChange(deltaEnergy, params);
-    end
+    
     
     
     flowParams(3) = -conductionBTL - radiation;
-    flowParams(10) = conductionBTL + radiation + flowParamsLHL - massChange(1);
+    flowParams(10) = conductionBTL + radiation + flowParamsLHL + massChange(1);
     flowParams(11) = -massChange(2);
     res = flowParams.';
 %     display(res);
