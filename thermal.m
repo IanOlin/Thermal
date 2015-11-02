@@ -47,6 +47,7 @@ function thermal()
     initialTime = 1;
     finalTime = 1000;
     emissivityCoefficient = .25; %lol magic space rays
+    thermalConductivitySteam = .00185;
         
         %% params
     params(1) = massOfBar;
@@ -69,7 +70,7 @@ function thermal()
     params(16) = steamSA;
 
         %% depriciated variables
-        %    thermalConductivitySteam = .00185;
+            thermalConductivitySteam = .00185;
             %steam heat transfer coefficient
 %     steamHeatTransfer = stuff;
     %thermalConductivityBar = 46.6;% Thermal conductivity watts/meter kelvin
@@ -103,22 +104,23 @@ function thermal()
 %             Y = Y.';
             
          %use for loop
-    T = zeros(initialTime, finalTime);
-    Y = zeros(initialTime, finalTime);
-    for n = initialTime:finalTime
-        temp = barToLiquid(6969, params.');
-        params = params + temp.';
-        T(n) = n;
-        Y(n) = energyToTemperature(params(10), params(11), params(13));
-        deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
-        temp2 = [0 0];
-        if(deltaEnergy > 0)
-            temp2 = phaseChange(deltaEnergy, params);
-        end
-        params(10) = params(10) - temp2(1);
-        params(11) = params(11) - temp2(2);
-    end
-    plot(T,Y);
+            T = zeros(1, 1000);
+            Y = zeros(1, 1000);
+            for n = 1:1000
+                temp = barToLiquid(6969, params.');
+                params = params + temp.';
+                T(n) = n;
+                Y(n) = energyToTemperature(params(10), params(11), params(13));
+                deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
+                temp2 = [0 0];
+                if(deltaEnergy > 0)
+                    temp2 = phaseChange(deltaEnergy, params);
+%                     display(temp2);
+                end
+                params(10) = params(10) - temp2(1);
+                params(11) = params(11) - temp2(2);
+            end
+            plot(T,Y);
         %% commented out code
 %             blah = zeros(1, length(T));
 %             for n = 1:length(T)
@@ -132,8 +134,6 @@ function thermal()
 %                 blah2(n) = Y(10, n);
 %             end
 %             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b');
-
-            
             
             
             
@@ -186,6 +186,21 @@ function thermal()
 %         end
 %         plot(energyToTemperature(liquidEnergies, liquidMass, 4186));
 %         display(params(18));
+
+%             [T, Y] = ode45(@phaseChange, [initialTime, 10], params.');
+%             T = T.';
+%             Y = Y.';
+%             blah = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah(n) = Y(21, n);
+%             end
+%             plot(T, energyToTemperature(blah, massOfBar, specificHeatBar), 'b');
+%             hold on;
+%             blah2 = zeros(1, length(T));
+%             for n = 1:length(T)
+%                 blah2(n) = Y(17, n);
+%             end
+%             plot(T, energyToTemperature(blah2, massOfSteam, specificHeatSteam), 'b');
         
 end
 
