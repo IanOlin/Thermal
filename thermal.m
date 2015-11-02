@@ -47,6 +47,7 @@ function thermal()
     initialTime = 1;
     finalTime = 1000;
     emissivityCoefficient = .25; %lol magic space rays
+    thermalConductivitySteam = .00185;
         
         %% params
     params(1) = massOfBar;
@@ -69,7 +70,7 @@ function thermal()
     params(16) = steamSA;
 
         %% depriciated variables
-        %    thermalConductivitySteam = .00185;
+           
             %steam heat transfer coefficient
 %     steamHeatTransfer = stuff;
     %thermalConductivityBar = 46.6;% Thermal conductivity watts/meter kelvin
@@ -111,12 +112,12 @@ function thermal()
         T(n) = n;
         Y(n) = energyToTemperature(params(10), params(11), params(13));
         deltaEnergy = params(10) - temperatureToEnergy(373, params(11), params(13)); %energy differency between liquid and boiling point, for phase change
-        temp2 = [0 0];
+        temp2 = zeros(1, length(params));
         if(deltaEnergy > 0)
             temp2 = phaseChange(deltaEnergy, params);
         end
         params(10) = params(10) - temp2(1);
-        params(11) = params(11) - temp2(2);
+        params(11) = params(11) - temp2(11);
     end
     plot(T,Y);
         %% commented out code
