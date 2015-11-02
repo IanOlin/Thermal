@@ -31,13 +31,17 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
 
     deltaT = energyToTemperature(barEnergy, massOfBar, specificHeatBar) - energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
     conductionBTL = thermalConductivitySteam * steamSA * deltaT / thicknessSteam;
-    deltaRT = energyToTemperature(barEnergy, massOfBar, specificHeatBar)^4 - energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid)^4;
+    barTemp = energyToTemperature(barEnergy, massOfBar, specificHeatBar);
+    liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
+    deltaRT = barTemp^4 - liquidTemp^4;
     radiation = emissivity * 5.67 * 10^(-8) * deltaRT * steamSA * .9;%not all radiation goes directly to water
+    display(barTemp);
+    display(liquidTemp);
     
     deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
     massChange = [0, 0];
     if deltaEnergy > 0
-        massChange = phaseChange(deltaEnergy, params);
+%         massChange = phaseChange(deltaEnergy, params);
     end
     
     
@@ -45,6 +49,7 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     flowParams(10) = conductionBTL + radiation + flowParamsLHL - massChange(1);
     flowParams(11) = -massChange(2);
     res = flowParams.';
+%     display(res);
 end
 
     function res = energyToTemperature(U, m, c)
@@ -55,3 +60,6 @@ end
         res = mass * specificHeat;
     end
     
+    function res = temperatureToEnergy( T, m, c)
+        res = T * heatCapacity(m,c);
+    end
