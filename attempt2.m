@@ -109,6 +109,7 @@ function shit = attempt2
     title('Cider Mass Over Time');
     xlabel('Time(seconds)');
     ylabel('Mass(kg)');
+    
 end
 function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
