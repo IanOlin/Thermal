@@ -2,7 +2,7 @@ function shit = attempt2
 
 
 
-    finalTime = 100;
+    finalTime = 5000;
     
     T = zeros(1, finalTime);
     liquidTemps = zeros(1, finalTime);
@@ -76,7 +76,7 @@ function shit = attempt2
             massChange = deltaEnergy / heatOfVaporization;
         end
         
-%         conductionLHL = 0;%fuck this
+        conductionLHL = 0;%fuck this
         energyFlowLiquid = conductionBTL + radiation - conductionLHL - convectionLHL - massEnergy;
         energyFlowBar = conductionBTL + radiation / .9;
         
@@ -90,14 +90,25 @@ function shit = attempt2
         barTemps(n) = energyToTemperature(barEnergy, barMass, specificHeatBar);
         liquidMasses(n) = liquidMass;
         
-        display(massEnergy);
+%         if(barTemp < 480)
+%             break;
+%         end
+        
+%         display(massEnergy);
     end
     
     hold on;
     plot(T, liquidTemps);
     plot(T, barTemps);
+    title('Temperature Over Time');
+    xlabel('Time(seconds)');
+    ylabel('Temperature(K)');
+    legend('Cider', 'Iron Bar');
     figure
     plot(T, liquidMasses);
+    title('Cider Mass Over Time');
+    xlabel('Time(seconds)');
+    ylabel('Mass(kg)');
 end
 function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
