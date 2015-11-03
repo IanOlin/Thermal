@@ -53,62 +53,75 @@ function shit = attempt2
     
     barTemp = 0;
     liquidTemp = 0;
-    
-    for n = 1:finalTime
-        barTemp = energyToTemperature(barEnergy, barMass, specificHeatBar);
-        liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
-        
-        thermalHeatCoefficient = 10;
-        conductionLHL = thermalConductivityMug * mugSA * (liquidTemp - 290) / mugThickness;
-        convectionLHL = thermalHeatCoefficient * airSA * (liquidTemp - 290);
-        
-        deltaT = barTemp - liquidTemp;
-        conductionBTL = thermalConductivitySteam * steamSA * deltaT / thicknessSteam;
+   % K = zeros(1000,2000);
+    TK = zeros(1000,2000);
+    for k = 1000:50:2000
+        barEnergy = temperatureToEnergy(k, barMass, specificHeatBar);
+        for n = 1:finalTime
+            barTemp = energyToTemperature(barEnergy, barMass, specificHeatBar);
+            liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
 
-        deltaRT = barTemp^4 - liquidTemp^4;
-        radiation = emissivityCoefficient * 5.67 * 10^(-8) * deltaRT * steamSA * .9;
-        
-        deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
-        massEnergy = 0;
-        massChange = 0;
-        if(deltaEnergy > 0)
-            massEnergy = deltaEnergy;
-            massChange = deltaEnergy / heatOfVaporization;
+            thermalHeatCoefficient = 10;
+            conductionLHL = thermalConductivityMug * mugSA * (liquidTemp - 290) / mugThickness;
+            convectionLHL = thermalHeatCoefficient * airSA * (liquidTemp - 290);
+
+            deltaT = barTemp - liquidTemp;
+            conductionBTL = thermalConductivitySteam * steamSA * deltaT / thicknessSteam;
+
+            deltaRT = barTemp^4 - liquidTemp^4;
+            radiation = emissivityCoefficient * 5.67 * 10^(-8) * deltaRT * steamSA * .9;
+
+            deltaEnergy = liquidEnergy - temperatureToEnergy(373, liquidMass, specificHeatLiquid);
+            massEnergy = 0;
+            massChange = 0;
+            if(deltaEnergy > 0)
+                massEnergy = deltaEnergy;
+                massChange = deltaEnergy / heatOfVaporization;
+            end
+
+   %         conductionLHL = 0;%fuck this
+            energyFlowLiquid = conductionBTL + radiation - conductionLHL - convectionLHL - massEnergy;
+            energyFlowBar = conductionBTL + radiation / .9;
+
+
+            liquidEnergy = liquidEnergy + energyFlowLiquid;
+            barEnergy = barEnergy - energyFlowBar;
+            liquidMass = liquidMass - massChange;
+
+            T(n) = n;
+            liquidTemps(n) = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
+            barTemps(n) = energyToTemperature(barEnergy, barMass, specificHeatBar);
+            liquidMasses(n) = liquidMass;
+
+    %         if(barTemp < 480)
+    %             break;
+    %         end
+
+    %         display(massEnergy);
         end
         
-        conductionLHL = 0;%fuck this
-        energyFlowLiquid = conductionBTL + radiation - conductionLHL - convectionLHL - massEnergy;
-        energyFlowBar = conductionBTL + radiation / .9;
-        
-
-        liquidEnergy = liquidEnergy + energyFlowLiquid;
-        barEnergy = barEnergy - energyFlowBar;
-        liquidMass = liquidMass - massChange;
-        
-        T(n) = n;
-        liquidTemps(n) = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
-        barTemps(n) = energyToTemperature(barEnergy, barMass, specificHeatBar);
-        liquidMasses(n) = liquidMass;
-        
-%         if(barTemp < 480)
-%             break;
-%         end
-        
-%         display(massEnergy);
-    end
     
     hold on;
-    plot(T, liquidTemps);
-    plot(T, barTemps);
-    title('Temperature Over Time');
-    xlabel('Time(seconds)');
-    ylabel('Temperature(K)');
-    legend('Cider', 'Iron Bar');
-    figure
-    plot(T, liquidMasses);
-    title('Cider Mass Over Time');
-    xlabel('Time(seconds)');
-    ylabel('Mass(kg)');
+   % plot(T, liquidTemps);
+    %plot(T, barTemps);
+    %title('Temperature Over Time');
+    %xlabel('Time(seconds)');
+    %ylabel('Temperature(K)');
+    %legend('Cider', 'Iron Bar');
+    %figure
+    %plot(T, liquidMasses);
+    %title('Cider Mass Over Time');
+    %xlabel('Time(seconds)');
+    %ylabel('Mass(kg)');
+    [M,I] = max(liquidTemps);
+   % disp(I);
+    K(k/50) = I;
+   % plot(k,I,'b-+')
+    TK(k) = k;
+    end
+    plot(K,'b')
+    xlim([20 40]);
+    
 end
 function res = energyToTemperature(U, m, c)
         res = U / heatCapacity(m,c);
