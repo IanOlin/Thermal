@@ -1,7 +1,7 @@
 function res = netFlow(~, params) %doesn't account for mass loss because we are bad and everything sucks.
     params = params.';
     airSA = (.04^2 * pi) - (.02^2 * pi); %surface area in contact with air
-    mugSA = airSA*1.2;%temp SA
+    mugSA = .008;%temp SA
 
     massOfBar = params(1);
     
@@ -41,11 +41,11 @@ function res = netFlow(~, params) %doesn't account for mass loss because we are 
     if deltaEnergy > 0
         massChange = -phaseChange(deltaEnergy, params);
     end
-    
+
 
     
-    flowParams(3) = (-conductionBTL - radiation)/1000;
-    flowParams(10) = (conductionBTL + radiation + flowParamsLHL  + massChange(1))/1000;
+    flowParams(3) = -conductionBTL - radiation;
+    flowParams(10) = conductionBTL + radiation + flowParamsLHL  + massChange(1);
     flowParams(11) = massChange(2);
     res = flowParams.';
 end

@@ -66,12 +66,21 @@ function thermal()
     params(14) = thermalConductivitySteam;
     params(15) = thicknessSteam;
     params(16) = steamSA;
+    %% events
+        function [value,isterminal,direction] = events(x,y)
+
+        value = [netFlow(x,y) netFlow(x,y)]; % this is the derivative
+        isterminal = [0 0];   % do not stop the integration
+        direction = [1 -1];
+        end
+
+        options = odeset('Events',@events);
 
         
 
         %% main
             tspan = 0:1:finalTime;
-            [T, Y] = ode45(@netFlow, tspan, params.');
+            [T, Y] = ode23(@netFlow, tspan, params.', options);
             T = T.';
             Y = Y.';
             blah = zeros(1, length(T));
@@ -85,12 +94,12 @@ function thermal()
                 blah2(n) = Y(10, n);
             end
             plot(T, energyToTemperature(blah2, liquidMass, specificHeatLiquid), 'b-');
-            figure
+           % figure
             blah3 = zeros(1, length(T));
             for n = 1:length(T)
                 blah3(n) = Y(11, n);
             end
-            plot(T,blah3);
+           % plot(T,blah3);
             
             
         
