@@ -13,7 +13,7 @@ function shit = attempt2
     diameterCider = 8/100; %meters
     heatOfVaporization = 2256*10^3; %J/kG
     heightCider = 10/100; 
-    mugThickness = 7/100;
+    mugThickness = .7/100;
     thermalConductivityMug =1.5;
     
     
@@ -39,8 +39,8 @@ function shit = attempt2
     specificHeatLiquid = 4186;
     liquidTemp = 290;
     liquidVolume = (pi * (diameterCider/2)^2) * heightCider - (volumeBar + volumeSteam);
-    liquidMass = liquidVolume * liquidDensity;
-    liquidEnergy = temperatureToEnergy(liquidTemp, liquidMass, specificHeatLiquid);
+    liquidMassO = liquidVolume * liquidDensity;
+    liquidEnergy = temperatureToEnergy(liquidTemp, liquidMassO, specificHeatLiquid);
     
     
     
@@ -53,10 +53,12 @@ function shit = attempt2
     
     barTemp = 0;
     liquidTemp = 0;
+    liquidMass = liquidMassO;
    % K = zeros(1000,2000);
     TK = zeros(1000,2000);
     for k = 1000:50:2000
         barEnergy = temperatureToEnergy(k, barMass, specificHeatBar);
+%         liquidMass = k/20 * liquidMassO;
         for n = 1:finalTime
             barTemp = energyToTemperature(barEnergy, barMass, specificHeatBar);
             liquidTemp = energyToTemperature(liquidEnergy, liquidMass, specificHeatLiquid);
@@ -79,7 +81,7 @@ function shit = attempt2
                 massChange = deltaEnergy / heatOfVaporization;
             end
 
-   %         conductionLHL = 0;%fuck this
+           conductionLHL = 0;%fuck this
             energyFlowLiquid = conductionBTL + radiation - conductionLHL - convectionLHL - massEnergy;
             energyFlowBar = conductionBTL + radiation / .9;
 
@@ -113,12 +115,16 @@ function shit = attempt2
     %title('Cider Mass Over Time');
     %xlabel('Time(seconds)');
     %ylabel('Mass(kg)');
-    [M,I] = max(liquidTemps);
+    [M,I] = min(liquidMasses);
    % disp(I);
-    K(k/50) = I;
+    K(k/50) = M;
+    K2(k/50) = I;
    % plot(k,I,'b-+')
     TK(k) = k;
     end
+    plot(K2, 'r');
+    xlim([20 40]);
+    figure
     plot(K,'b')
     xlim([20 40]);
     
